@@ -1,16 +1,16 @@
 package app.entities;
 
 import app.dtos.HotelDTO;
-import app.dtos.RoomDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,13 +25,14 @@ public class Hotel
     private String address;
 
     @OneToMany(mappedBy = "hotel", orphanRemoval = true)
-    private Set<Room> rooms;
+    private Set<Room> rooms = new HashSet<>();
 
     public Hotel(HotelDTO hotelDTO)
     {
         this.id = hotelDTO.getId();
         this.name = hotelDTO.getName();
         this.address = hotelDTO.getAddress();
+        this.rooms = new HashSet<>();
     }
 
     public Hotel(Hotel hotel)

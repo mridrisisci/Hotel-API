@@ -1,23 +1,55 @@
 package app.controllers;
 
 import app.daos.GenericDAO;
+import app.dtos.HotelContainerDTO;
 import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import app.entities.Hotel;
+import app.entities.Room;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class HotelController
 {
     private GenericDAO genericDAO;
     private Logger logger = LoggerFactory.getLogger(HotelController.class);
     private ObjectMapper objectMapper = new ObjectMapper();
+    private static ArrayList<HotelDTO> hotels = new ArrayList<>();
 
     public HotelController(EntityManagerFactory emf) { genericDAO = GenericDAO.getInstance(emf); }
+
+
+    public void populateDB()
+    {
+        try {
+            JsonNode node = objectMapper.readTree(new File("src/hotels.json"));
+            Set<HotelDTO> hotels = objectMapper.convertValue(node, new TypeReference<Set<HotelDTO>>() {});
+            for (HotelDTO hotelDTO : hotels) {
+                Hotel hotel = new Hotel(hotelDTO);
+                for (RoomDTO roomDTO : hotelDTO.getRooms()) {
+                    Room room = new Room(roomDTO);
+                    room.setHotel(hotel);
+                    hotel.getRooms().add(room);
+                    genericDAO.create(room);
+                }
+                genericDAO.create(hotel);
+                //HotelContainerDTO[] hotelS = objectMapper.readValue(new File("src/hotels.json"), HotelContainerDTO[].class);
+                //hotels.forEach(System.out::println);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     public void create(Context ctx)
     {

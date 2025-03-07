@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Hotel Sunshine",
+    "address": "123 Beach Road, Ocean City",
+    "rooms": [
+      {
+        "id": 1,
+        "number": 101,
+        "price": 100,
+        "hotel": {
+          "id": 1,
+          "name": "Hotel Sunshine",
+          "address": "123 Beach Road, Ocean City"
+        }
+      },
+      {
+        "id": 2,
+        "number": 102,
+        "price": 120,
+        "hotel": {
+          "id": 1,
+          "name": "Hotel Sunshine",
+          "address": "123 Beach Road, Ocean City"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Mountain View Resort",
+    "address": "456 Mountain Drive, Hilltop",
+    "rooms": [
+      {
+        "id": 3,
+        "number": 201,
+        "price": 150,
+        "hotel": {
+          "id": 2,
+          "name": "Mountain View Resort",
+          "address": "456 Mountain Drive, Hilltop"
+        }
+      },
+      {
+        "id": 4,
+        "number": 202,
+        "price": 170,
+        "hotel": {
+          "id": 2,
+          "name": "Mountain View Resort",
+          "address": "456 Mountain Drive, Hilltop"
+        }
+      }
+    ]
+  }
+]

@@ -2,14 +2,14 @@ package app.entities;
 
 import app.dtos.RoomDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "rooms")
@@ -18,26 +18,19 @@ public class Room
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer hotelId;
     private Integer number;
     private Integer price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     public Room(RoomDTO roomDTO)
     {
         this.id = roomDTO.getId();
-        this.hotelId = roomDTO.getHotelId();
         this.number = roomDTO.getNumber();
         this.price = roomDTO.getPrice();
     }
 
-    public Room(Integer hotelId, Integer number, Integer price)
-    {
-        this.hotelId = hotelId;
-        this.number = number;
-        this.price = price;
-    }
 }

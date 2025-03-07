@@ -1,5 +1,6 @@
 package app.dtos;
 
+import app.entities.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,16 +11,13 @@ import lombok.NoArgsConstructor;
 public class RoomDTO
 {
     private Integer id;
-    private Integer hotelId;
     private Integer number;
     private Integer price;
 
-    public RoomDTO(Integer hotelId, Integer number, Integer price)
+    public RoomDTO(Room room)
     {
-        this.hotelId = hotelId;
-        this.number = number;
-        this.price = price;
+        this.id = room.getId();
+        this.number = room.getNumber();
+        this.price = room.getPrice();
     }
-
-
 }
