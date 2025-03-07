@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 @Data
@@ -20,6 +21,10 @@ public class Room
     private Integer hotelId;
     private Integer number;
     private Integer price;
+
+    @ManyToOne
+    @ToString.Exclude
+    private Hotel hotel;
 
     public Room(RoomDTO roomDTO)
     {

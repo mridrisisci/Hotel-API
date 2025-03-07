@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
+
 
 @Data
 @AllArgsConstructor
@@ -22,7 +23,9 @@ public class Hotel
     private Integer id;
     private String name;
     private String address;
-    private List<RoomDTO> rooms;
+
+    @OneToMany(mappedBy = "hotel", orphanRemoval = true)
+    private Set<Room> rooms;
 
     public Hotel(HotelDTO hotelDTO)
     {
@@ -31,9 +34,10 @@ public class Hotel
         this.address = hotelDTO.getAddress();
     }
 
-    public Hotel(String name, String address)
+    public Hotel(Hotel hotel)
     {
-        this.name = name;
-        this.address = address;
+        this.id = hotel.getId();
+        this.name = hotel.getName();
+        this.address = hotel.getAddress();
     }
 }
