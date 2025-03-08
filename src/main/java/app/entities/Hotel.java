@@ -1,16 +1,16 @@
 package app.entities;
 
 import app.dtos.HotelDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,15 +24,20 @@ public class Hotel
     private String name;
     private String address;
 
-    @OneToMany(mappedBy = "hotel", orphanRemoval = true)
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "hotel", orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
     public Hotel(HotelDTO hotelDTO)
     {
-        this.id = hotelDTO.getId();
         this.name = hotelDTO.getName();
         this.address = hotelDTO.getAddress();
-        this.rooms = new HashSet<>();
+        this.rooms = hotelDTO.getRooms().stream()
+            .map(room -> new Room(room, this))
+            .collect(Collectors.toSet());
     }
 
     public Hotel(Hotel hotel)
@@ -40,5 +45,10 @@ public class Hotel
         this.id = hotel.getId();
         this.name = hotel.getName();
         this.address = hotel.getAddress();
+    }
+
+    public void addRoom(Room room)
+    {
+        rooms.add(room);
     }
 }

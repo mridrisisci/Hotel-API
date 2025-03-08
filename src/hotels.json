@@ -1,56 +1,234 @@
-[
-  {
-    "id": 1,
-    "name": "Hotel Sunshine",
-    "address": "123 Beach Road, Ocean City",
-    "rooms": [
-      {
-        "id": 1,
-        "number": 101,
-        "price": 100,
-        "hotel": {
-          "id": 1,
-          "name": "Hotel Sunshine",
-          "address": "123 Beach Road, Ocean City"
+{
+  "hotels": [
+    {
+      "name": "Grand Palace Hotel",
+      "address": "123 Main Street, Cityville",
+      "rooms": [
+        {
+          "roomNumber": "101",
+          "price": 150.0
+        },
+        {
+          "roomNumber": "102",
+          "price": 180.0
+        },
+        {
+          "roomNumber": "103",
+          "price": 200.0
+        },
+        {
+          "roomNumber": "104",
+          "price": 220.0
+        },
+        {
+          "roomNumber": "105",
+          "price": 250.0
+        },
+        {
+          "roomNumber": "106",
+          "price": 275.0
+        },
+        {
+          "roomNumber": "107",
+          "price": 290.0
+        },
+        {
+          "roomNumber": "108",
+          "price": 310.0
+        },
+        {
+          "roomNumber": "109",
+          "price": 330.0
+        },
+        {
+          "roomNumber": "110",
+          "price": 350.0
         }
-      },
-      {
-        "id": 2,
-        "number": 102,
-        "price": 120,
-        "hotel": {
-          "id": 1,
-          "name": "Hotel Sunshine",
-          "address": "123 Beach Road, Ocean City"
+      ]
+    },
+    {
+      "name": "Ocean View Resort",
+      "address": "456 Beach Avenue, Seaside",
+      "rooms": [
+        {
+          "roomNumber": "201",
+          "price": 160.0
+        },
+        {
+          "roomNumber": "202",
+          "price": 185.0
+        },
+        {
+          "roomNumber": "203",
+          "price": 210.0
+        },
+        {
+          "roomNumber": "204",
+          "price": 230.0
+        },
+        {
+          "roomNumber": "205",
+          "price": 255.0
+        },
+        {
+          "roomNumber": "206",
+          "price": 280.0
+        },
+        {
+          "roomNumber": "207",
+          "price": 295.0
+        },
+        {
+          "roomNumber": "208",
+          "price": 315.0
+        },
+        {
+          "roomNumber": "209",
+          "price": 335.0
+        },
+        {
+          "roomNumber": "210",
+          "price": 355.0
         }
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "name": "Mountain View Resort",
-    "address": "456 Mountain Drive, Hilltop",
-    "rooms": [
-      {
-        "id": 3,
-        "number": 201,
-        "price": 150,
-        "hotel": {
-          "id": 2,
-          "name": "Mountain View Resort",
-          "address": "456 Mountain Drive, Hilltop"
+      ]
+    },
+    {
+      "name": "Mountain Lodge",
+      "address": "789 Summit Road, Highlands",
+      "rooms": [
+        {
+          "roomNumber": "301",
+          "price": 170.0
+        },
+        {
+          "roomNumber": "302",
+          "price": 190.0
+        },
+        {
+          "roomNumber": "303",
+          "price": 220.0
+        },
+        {
+          "roomNumber": "304",
+          "price": 240.0
+        },
+        {
+          "roomNumber": "305",
+          "price": 265.0
+        },
+        {
+          "roomNumber": "306",
+          "price": 285.0
+        },
+        {
+          "roomNumber": "307",
+          "price": 300.0
+        },
+        {
+          "roomNumber": "308",
+          "price": 320.0
+        },
+        {
+          "roomNumber": "309",
+          "price": 340.0
+        },
+        {
+          "roomNumber": "310",
+          "price": 360.0
         }
-      },
-      {
-        "id": 4,
-        "number": 202,
-        "price": 170,
-        "hotel": {
-          "id": 2,
-          "name": "Mountain View Resort",
-          "address": "456 Mountain Drive, Hilltop"
+      ]
+    },
+    {
+      "name": "Urban Suites",
+      "address": "101 Downtown Blvd, Metropolis",
+      "rooms": [
+        {
+          "roomNumber": "401",
+          "price": 180.0
+        },
+        {
+          "roomNumber": "402",
+          "price": 200.0
+        },
+        {
+          "roomNumber": "403",
+          "price": 230.0
+        },
+        {
+          "roomNumber": "404",
+          "price": 250.0
+        },
+        {
+          "roomNumber": "405",
+          "price": 275.0
+        },
+        {
+          "roomNumber": "406",
+          "price": 290.0
+        },
+        {
+          "roomNumber": "407",
+          "price": 310.0
+        },
+        {
+          "roomNumber": "408",
+          "price": 330.0
+        },
+        {
+          "roomNumber": "409",
+          "price": 350.0
+        },
+        {
+          "roomNumber": "410",
+          "price": 370.0
         }
-      }
-    ]
-  }
-]
+      ]
+    },
+    {
+      "name": "Lakeside Inn",
+      "address": "202 Lakefront Drive, Rivertown",
+      "rooms": [
+        {
+          "roomNumber": "501",
+          "price": 190.0
+        },
+        {
+          "roomNumber": "502",
+          "price": 210.0
+        },
+        {
+          "roomNumber": "503",
+          "price": 240.0
+        },
+        {
+          "roomNumber": "504",
+          "price": 260.0
+        },
+        {
+          "roomNumber": "505",
+          "price": 285.0
+        },
+        {
+          "roomNumber": "506",
+          "price": 300.0
+        },
+        {
+          "roomNumber": "507",
+          "price": 320.0
+        },
+        {
+          "roomNumber": "508",
+          "price": 340.0
+        },
+        {
+          "roomNumber": "509",
+          "price": 360.0
+        },
+        {
+          "roomNumber": "510",
+          "price": 380.0
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,7 @@
 package app.controllers;
 
 import app.daos.GenericDAO;
-import app.dtos.HotelContainerDTO;
 import app.dtos.HotelDTO;
-import app.dtos.RoomDTO;
 import app.entities.Hotel;
 import app.entities.Room;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,17 +29,18 @@ public class HotelController
     public void populateDB()
     {
         try {
-            JsonNode node = objectMapper.readTree(new File("src/hotels.json"));
+            JsonNode node = objectMapper.readTree(new File("src/hotels.json")).get("hotels");
             Set<HotelDTO> hotels = objectMapper.convertValue(node, new TypeReference<Set<HotelDTO>>() {});
-            for (HotelDTO hotelDTO : hotels) {
+            for (HotelDTO hotelDTO : hotels)
+            {
                 Hotel hotel = new Hotel(hotelDTO);
-                for (RoomDTO roomDTO : hotelDTO.getRooms()) {
-                    Room room = new Room(roomDTO);
+                genericDAO.create(hotel);
+                for (Room room : hotelDTO.getRooms())
+                { // iterates the hashset
+                    //hotel.getRooms().add(room);
                     room.setHotel(hotel);
-                    hotel.getRooms().add(room);
                     genericDAO.create(room);
                 }
-                genericDAO.create(hotel);
                 //HotelContainerDTO[] hotelS = objectMapper.readValue(new File("src/hotels.json"), HotelContainerDTO[].class);
                 //hotels.forEach(System.out::println);
             }
