@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class HotelController
@@ -39,12 +40,9 @@ public class HotelController
                 genericDAO.create(hotel);
                 for (RoomDTO roomDTO : hotelDTO.getRooms())
                 { // iterates the hashset
-                    //hotel.getRooms().add(room);
                     Room room = new Room(roomDTO, hotel);
                     genericDAO.create(room);
                 }
-                //HotelContainerDTO[] hotelS = objectMapper.readValue(new File("src/hotels.json"), HotelContainerDTO[].class);
-                //hotels.forEach(System.out::println);
             }
         } catch (Exception e)
         {
@@ -71,8 +69,12 @@ public class HotelController
     {
         try
         {
-            logger.info("testing123", ctx.path());
-            ctx.json(genericDAO.findAll(Hotel.class));
+            logger.info("fetching hotels...", ctx.path());
+            List<Hotel> hotels = genericDAO.findAll(Hotel.class);
+            /*
+            List<HotelDTO> hotelDTOs = hotels.stream()
+                .map(HotelDTO::new)
+                .toList();*/
         } catch (Exception e)
         {
             logger.error("unable to retrieve all hotels", e);
@@ -87,6 +89,15 @@ public class HotelController
         {
             Long id = Long.parseLong(ctx.pathParam("id"));
             Hotel foundHotel = new Hotel(genericDAO.read(Hotel.class, id));
+
+            if (foundHotel == null)
+            {
+                ctx.status(404).json("Could not find hotel");
+                return;
+            }
+
+            HotelDTO hotelDTO = new HotelDTO(foundHotel);
+            ctx.json(hotelDTO);
         } catch (Exception e)
         {
             logger.error("unable to find the hotel", e);
@@ -99,7 +110,19 @@ public class HotelController
     {
         try
         {
+            Long hotelId = Long.parseLong(ctx.pathParam("id"));
 
+            Hotel hotel = genericDAO.read(Hotel.class, hotelId);
+            if (hotel == null)
+            {
+                ctx.status(404).json(new ErrorMessage("Could not find hotel"));
+                return;
+            }
+
+            List<RoomDTO> roomDTOS = hotel.getRooms().stream()
+                    .map(RoomDTO::new)
+                        .toList();
+            ctx.json(roomDTOS);
         } catch (Exception e)
         {
             logger.error("Error displaying the hotels", e);

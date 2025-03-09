@@ -3,8 +3,8 @@ GET localhost:7000/api/hotel
 
 ###
 
-// GET ALL HOTELS
-GET localhost:7000/api/5/rooms
+// GET ALL ROOMS FOR HOTEL
+GET localhost:7000/api/hotel/2/rooms
 
 ###
 // CREATE NEW HOTEL
