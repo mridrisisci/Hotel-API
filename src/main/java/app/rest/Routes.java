@@ -18,12 +18,19 @@ public class Routes
         {
             path("/hotel", () ->
             {
-                get("/", hotelController::getAll);
                 get("/{id}", hotelController::getById);
-                get("/{id}/rooms", hotelController::getRooms);
+                get("/", hotelController::getHotels);
                 post("/", hotelController::create);
                 put("/{id}", hotelController::update);
                 delete("/{id}", hotelController::delete);
+            });
+            path("/room", () ->
+            {
+
+            });
+            path("hotel/{id}/rooms", () ->
+            {
+                get(hotelController::getRooms);
             });
         };
     }

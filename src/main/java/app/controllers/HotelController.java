@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class HotelController
 {
@@ -54,9 +55,20 @@ public class HotelController
     {
         try
         {
-            HotelDTO hotelDTO = ctx.bodyAsClass(HotelDTO.class);
-            Hotel hotel = new Hotel(hotelDTO);
-            ctx.json(genericDAO.create(hotelDTO));
+            // deserialize the incoming request
+            logger.info("creating hotel");
+            HotelDTO incomingHotel = ctx.bodyAsClass(HotelDTO.class);
+            logger.info("Deseralized HTTP request ", incomingHotel);
+
+            // convert to entity
+            Hotel newHotel = new Hotel(incomingHotel);
+            logger.info("Converted DTO to entity ", newHotel);
+
+            // persist new object
+            Hotel createdHotel =  genericDAO.create(newHotel);
+            logger.info("Created hotel: ", createdHotel);
+            ctx.status(200).json("Object has been persisted to DB");
+            ctx.json(new HotelDTO(createdHotel));
         } catch (Exception e)
         {
             logger.error("unable to persist hotel to db", e);
@@ -65,21 +77,22 @@ public class HotelController
         }
     }
 
-    public void getAll(Context ctx)
+    public void getHotels(Context ctx)
     {
         try
         {
-            logger.info("fetching hotels...", ctx.path());
+            // fetch
             List<Hotel> hotels = genericDAO.findAll(Hotel.class);
-            /*
-            List<HotelDTO> hotelDTOs = hotels.stream()
+
+            hotels.stream()
                 .map(HotelDTO::new)
-                .toList();*/
+                .forEach(System.out::println);
+            ctx.status(200).json("Hotels have been fetched.");
         } catch (Exception e)
         {
-            logger.error("unable to retrieve all hotels", e);
-            ErrorMessage error = new ErrorMessage("unable to find all the hotels");
-            ctx.status(404).json(e);
+            logger.info("unable to fetch hotels");
+            ErrorMessage error = new ErrorMessage("unable to fetch hotels");
+            ctx.status(404).json(error);
         }
     }
 
@@ -121,7 +134,7 @@ public class HotelController
 
             List<RoomDTO> roomDTOS = hotel.getRooms().stream()
                     .map(RoomDTO::new)
-                        .toList();
+                        .collect(Collectors.toList());
             ctx.json(roomDTOS);
         } catch (Exception e)
         {
@@ -135,10 +148,53 @@ public class HotelController
     public void update(Context ctx)
     {
 
+        try
+        {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+
+            // grab http request
+            HotelDTO incomingHotel = ctx.bodyAsClass(HotelDTO.class);
+
+            // fetch existing hotel
+            Hotel existingHotel = genericDAO.read(Hotel.class, (long) id);
+            if(existingHotel == null)
+            {
+                ctx.status(404).json("could not fetch hotel");
+                return;
+            }
+            // update params
+            existingHotel.setId(incomingHotel.getId());
+            existingHotel.setName(incomingHotel.getName());
+            existingHotel.setAddress(incomingHotel.getAddress());
+            existingHotel.setRooms(incomingHotel.getRooms().stream()
+                .map(room -> new Room(room, existingHotel))
+                .collect(Collectors.toSet()));
+
+            genericDAO.update(existingHotel);
+            ctx.status(200).json(new HotelDTO(existingHotel));
+        } catch (Exception e)
+        {
+            logger.error("error updating hotel", e);
+            ErrorMessage error = new ErrorMessage("error updating hotel");
+            ctx.status(400).json(error);
+        }
+
     }
 
     public void delete(Context ctx)
     {
+
+        try
+        {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            genericDAO.delete(Hotel.class, (long) id);
+            ctx.status(204).json("hotel deleted");
+
+        } catch (Exception e)
+        {
+
+        }
+
 
     }
 

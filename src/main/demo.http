@@ -7,12 +7,51 @@ GET localhost:7000/api/hotel
 GET localhost:7000/api/hotel/2/rooms
 
 ###
-// CREATE NEW HOTEL
-POST localhost:7000/api/
+
 
 ###
 
-//
+POST localhost:7000/api/hotel/
+Content-Type: application/json
+
+{
+  "name": "Hotel New York",
+  "address": "Plaza 1200 St",
+  "rooms": [
+    {
+      "number": "202",
+      "price": 100
+    },
+    {
+      "number": "322",
+      "price": 211
+    }
+  ]
+}
+
+###
+
+// UPDATE HOTEL
+PUT localhost:7000/api/hotel/2
+Cootent-Type: "application/json"
+
+{
+    "id": 1,
+    "name": "Updated Hotel Name",
+    "address": "Updated Address",
+    "rooms": [
+        {
+            "id": 101,
+            "number": 1,
+            "price": 100
+        },
+        {
+            "id": 102,
+            "number": 2,
+            "price": 150
+        }
+    ]
+}
 
 ###
 

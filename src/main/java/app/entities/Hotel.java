@@ -42,7 +42,6 @@ public class Hotel
 
     public Hotel(Hotel hotel)
     {
-        this.id = hotel.getId();
         this.name = hotel.getName();
         this.address = hotel.getAddress();
     }
