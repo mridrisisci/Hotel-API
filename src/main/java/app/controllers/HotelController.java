@@ -196,12 +196,12 @@ public class HotelController
                 ctx.status(404).json("Could not find and/or delete hotel");
                 return;
             }
-            // convert to dto
             genericDAO.delete(Hotel.class, (long) id);
+            // convert to dto
             HotelDTO deletedHotel = new HotelDTO(fetchHotel);
 
             logger.info("deleted hotel", deletedHotel);
-            ctx.status(204).json("hotel deleted");
+            ctx.status(200).json("hotel deleted");
             ctx.json(deletedHotel);
 
         } catch (Exception e)

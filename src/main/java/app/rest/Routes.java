@@ -26,7 +26,7 @@ public class Routes
             });
             path("/room", () ->
             {
-
+                // add rooms to hotel ?
             });
             path("hotel/{id}/rooms", () ->
             {
