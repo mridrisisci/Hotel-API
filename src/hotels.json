@@ -5,43 +5,43 @@
       "address": "123 Main Street, Cityville",
       "rooms": [
         {
-          "roomNumber": "101",
+          "number": "101",
           "price": 150.0
         },
         {
-          "roomNumber": "102",
+          "number": "102",
           "price": 180.0
         },
         {
-          "roomNumber": "103",
+          "number": "103",
           "price": 200.0
         },
         {
-          "roomNumber": "104",
+          "number": "104",
           "price": 220.0
         },
         {
-          "roomNumber": "105",
+          "number": "105",
           "price": 250.0
         },
         {
-          "roomNumber": "106",
+          "number": "106",
           "price": 275.0
         },
         {
-          "roomNumber": "107",
+          "number": "107",
           "price": 290.0
         },
         {
-          "roomNumber": "108",
+          "number": "108",
           "price": 310.0
         },
         {
-          "roomNumber": "109",
+          "number": "109",
           "price": 330.0
         },
         {
-          "roomNumber": "110",
+          "number": "110",
           "price": 350.0
         }
       ]
@@ -51,43 +51,43 @@
       "address": "456 Beach Avenue, Seaside",
       "rooms": [
         {
-          "roomNumber": "201",
+          "number": "201",
           "price": 160.0
         },
         {
-          "roomNumber": "202",
+          "number": "202",
           "price": 185.0
         },
         {
-          "roomNumber": "203",
+          "number": "203",
           "price": 210.0
         },
         {
-          "roomNumber": "204",
+          "number": "204",
           "price": 230.0
         },
         {
-          "roomNumber": "205",
+          "number": "205",
           "price": 255.0
         },
         {
-          "roomNumber": "206",
+          "number": "206",
           "price": 280.0
         },
         {
-          "roomNumber": "207",
+          "number": "207",
           "price": 295.0
         },
         {
-          "roomNumber": "208",
+          "number": "208",
           "price": 315.0
         },
         {
-          "roomNumber": "209",
+          "number": "209",
           "price": 335.0
         },
         {
-          "roomNumber": "210",
+          "number": "210",
           "price": 355.0
         }
       ]
@@ -97,43 +97,43 @@
       "address": "789 Summit Road, Highlands",
       "rooms": [
         {
-          "roomNumber": "301",
+          "number": "301",
           "price": 170.0
         },
         {
-          "roomNumber": "302",
+          "number": "302",
           "price": 190.0
         },
         {
-          "roomNumber": "303",
+          "number": "303",
           "price": 220.0
         },
         {
-          "roomNumber": "304",
+          "number": "304",
           "price": 240.0
         },
         {
-          "roomNumber": "305",
+          "number": "305",
           "price": 265.0
         },
         {
-          "roomNumber": "306",
+          "number": "306",
           "price": 285.0
         },
         {
-          "roomNumber": "307",
+          "number": "307",
           "price": 300.0
         },
         {
-          "roomNumber": "308",
+          "number": "308",
           "price": 320.0
         },
         {
-          "roomNumber": "309",
+          "number": "309",
           "price": 340.0
         },
         {
-          "roomNumber": "310",
+          "number": "310",
           "price": 360.0
         }
       ]
@@ -143,43 +143,43 @@
       "address": "101 Downtown Blvd, Metropolis",
       "rooms": [
         {
-          "roomNumber": "401",
+          "number": "401",
           "price": 180.0
         },
         {
-          "roomNumber": "402",
+          "number": "402",
           "price": 200.0
         },
         {
-          "roomNumber": "403",
+          "number": "403",
           "price": 230.0
         },
         {
-          "roomNumber": "404",
+          "number": "404",
           "price": 250.0
         },
         {
-          "roomNumber": "405",
+          "number": "405",
           "price": 275.0
         },
         {
-          "roomNumber": "406",
+          "number": "406",
           "price": 290.0
         },
         {
-          "roomNumber": "407",
+          "number": "407",
           "price": 310.0
         },
         {
-          "roomNumber": "408",
+          "number": "408",
           "price": 330.0
         },
         {
-          "roomNumber": "409",
+          "number": "409",
           "price": 350.0
         },
         {
-          "roomNumber": "410",
+          "number": "410",
           "price": 370.0
         }
       ]
@@ -189,43 +189,43 @@
       "address": "202 Lakefront Drive, Rivertown",
       "rooms": [
         {
-          "roomNumber": "501",
+          "number": "501",
           "price": 190.0
         },
         {
-          "roomNumber": "502",
+          "number": "502",
           "price": 210.0
         },
         {
-          "roomNumber": "503",
+          "number": "503",
           "price": 240.0
         },
         {
-          "roomNumber": "504",
+          "number": "504",
           "price": 260.0
         },
         {
-          "roomNumber": "505",
+          "number": "505",
           "price": 285.0
         },
         {
-          "roomNumber": "506",
+          "number": "506",
           "price": 300.0
         },
         {
-          "roomNumber": "507",
+          "number": "507",
           "price": 320.0
         },
         {
-          "roomNumber": "508",
+          "number": "508",
           "price": 340.0
         },
         {
-          "roomNumber": "509",
+          "number": "509",
           "price": 360.0
         },
         {
-          "roomNumber": "510",
+          "number": "510",
           "price": 380.0
         }
       ]

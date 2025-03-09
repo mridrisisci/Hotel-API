@@ -1,7 +1,9 @@
 package app.controllers;
 
 import app.daos.GenericDAO;
+import app.dtos.ErrorMessage;
 import app.dtos.HotelDTO;
+import app.dtos.RoomDTO;
 import app.entities.Hotel;
 import app.entities.Room;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,10 +37,10 @@ public class HotelController
             {
                 Hotel hotel = new Hotel(hotelDTO);
                 genericDAO.create(hotel);
-                for (Room room : hotelDTO.getRooms())
+                for (RoomDTO roomDTO : hotelDTO.getRooms())
                 { // iterates the hashset
                     //hotel.getRooms().add(room);
-                    room.setHotel(hotel);
+                    Room room = new Room(roomDTO, hotel);
                     genericDAO.create(room);
                 }
                 //HotelContainerDTO[] hotelS = objectMapper.readValue(new File("src/hotels.json"), HotelContainerDTO[].class);
@@ -59,7 +61,9 @@ public class HotelController
             ctx.json(genericDAO.create(hotelDTO));
         } catch (Exception e)
         {
-            ctx.status(404).json("could not persist object to db");
+            logger.error("unable to persist hotel to db", e);
+            ErrorMessage error = new ErrorMessage("unable to persist the hotel to db");
+            ctx.status(404).json(e);
         }
     }
 
@@ -71,7 +75,9 @@ public class HotelController
             ctx.json(genericDAO.findAll(Hotel.class));
         } catch (Exception e)
         {
-            ctx.status(404).json("hotels not found");
+            logger.error("unable to retrieve all hotels", e);
+            ErrorMessage error = new ErrorMessage("unable to find all the hotels");
+            ctx.status(404).json(e);
         }
     }
 
@@ -83,12 +89,23 @@ public class HotelController
             Hotel foundHotel = new Hotel(genericDAO.read(Hotel.class, id));
         } catch (Exception e)
         {
-            ctx.status(404).json("could not find hotel");
+            logger.error("unable to find the hotel", e);
+            ErrorMessage error = new ErrorMessage("unable to find hotel");
+            ctx.status(404).json(error);
         }
     }
 
     public void getRooms(Context ctx)
     {
+        try
+        {
+
+        } catch (Exception e)
+        {
+            logger.error("Error displaying the hotels", e);
+            ErrorMessage error = new ErrorMessage("error getting hotels");
+            ctx.status(404).json(error);
+        }
 
     }
 

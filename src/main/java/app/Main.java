@@ -17,7 +17,12 @@ public class Main
 
     public static void main(String[] args)
     {
+        // Run this line once to insert data to the DB from the JSON file.
+
+        /*
         hotelController.populateDB();
+        // */
+
         ApplicationConfig
             .getInstance()
             .initiateServer()

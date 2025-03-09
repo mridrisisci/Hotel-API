@@ -18,6 +18,6 @@ public class HotelDTO
     private Integer id;
     private String name;
     private String address;
-    private Set<Room> rooms;
+    private Set<RoomDTO> rooms;
 
 }
