@@ -81,13 +81,14 @@ public class HotelController
     {
         try
         {
-            // fetch
+            // fetch entities
             List<Hotel> hotels = genericDAO.findAll(Hotel.class);
-
-            hotels.stream()
+            // convert to DTOs
+            List<HotelDTO> hotelDTOS = hotels.stream()
                 .map(HotelDTO::new)
-                .forEach(System.out::println);
-            ctx.status(200).json("Hotels have been fetched.");
+                .collect(Collectors.toList());
+            ctx.status(200).json(hotelDTOS);
+            logger.info("Hotels have been feetched");
         } catch (Exception e)
         {
             logger.info("unable to fetch hotels");
@@ -187,12 +188,27 @@ public class HotelController
         try
         {
             int id = Integer.parseInt(ctx.pathParam("id"));
+
+            // fetch hotel
+            Hotel fetchHotel = genericDAO.read(Hotel.class, (long) id);
+            if (!fetchHotel.getId().equals(id))
+            {
+                ctx.status(404).json("Could not find and/or delete hotel");
+                return;
+            }
+            // convert to dto
             genericDAO.delete(Hotel.class, (long) id);
+            HotelDTO deletedHotel = new HotelDTO(fetchHotel);
+
+            logger.info("deleted hotel", deletedHotel);
             ctx.status(204).json("hotel deleted");
+            ctx.json(deletedHotel);
 
         } catch (Exception e)
         {
-
+            logger.error("error deleting hotel", e);
+            ErrorMessage error = new ErrorMessage("error deleting hotel");
+            ctx.status(400).json(error);
         }
 
 
