@@ -40,6 +40,11 @@ public class Hotel
             .collect(Collectors.toSet());
     }
 
+    public Hotel(String name)
+    {
+        this.name = name;
+    }
+
     public Hotel(Hotel hotel)
     {
         this.name = hotel.getName();

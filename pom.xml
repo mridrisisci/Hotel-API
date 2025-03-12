@@ -43,6 +43,12 @@
             <groupId>io.javalin</groupId>
             <artifactId>javalin-bundle</artifactId>
             <version>${javalin.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--  Logging    -->
