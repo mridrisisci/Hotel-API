@@ -158,6 +158,7 @@ public class HotelController
 
             // fetch existing hotel
             Hotel existingHotel = genericDAO.read(Hotel.class, (long) id);
+
             if(existingHotel == null)
             {
                 ctx.status(404).json("could not fetch hotel");

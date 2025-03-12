@@ -21,6 +21,7 @@
         <jackson.version>2.18.3</jackson.version>
         <javalin.version>6.4.0</javalin.version>
         <slf4j.version>2.0.16</slf4j.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
     </properties>
 
     <dependencies>
@@ -141,6 +142,14 @@
             <version>5.5.0</version> <!-- Use the latest version available -->
             <scope>test</scope>
         </dependency>
+
+        <!-- BCRYPT -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>${jbcrypt.version}</version>
+        </dependency>
+
     </dependencies>
 
 

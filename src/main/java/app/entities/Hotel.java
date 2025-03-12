@@ -27,7 +27,7 @@ public class Hotel
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "hotel", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hotel", orphanRemoval = true, fetch = FetchType.EAGER) // standard fetch type is LAZY in @OneToMany
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
