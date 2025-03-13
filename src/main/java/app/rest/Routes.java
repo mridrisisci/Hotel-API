@@ -50,8 +50,8 @@ public class Routes
             path("/secured", () ->
             {
                 get("demo", (ctx) -> ctx.json(objectMapper.createObjectNode().put("msg","success")), Role.ACCOUNT);
-                before(ctx-> iSecurityController.authenticate());
-                before(ctx-> iSecurityController.authorize());
+                //before(ctx-> iSecurityController.authenticate());
+                //before(ctx-> iSecurityController.authorize());
 
             });
         };

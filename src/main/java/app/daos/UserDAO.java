@@ -3,7 +3,7 @@ package app.daos;
 import app.config.HibernateConfig;
 import app.entities.Role;
 import app.entities.User;
-import dk.cphbusiness.exceptions.ValidationException;
+import app.exceptions.ValidationException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
@@ -86,7 +86,7 @@ public class UserDAO
         }
     }
 
-    public UserDTO getVerifeidUser(String username, String password)
+    public UserDTO getVerifeidUser(String username, String password) throws ValidationException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -98,11 +98,20 @@ public class UserDAO
             user.getRoles().size();
             if (!user.verifyPassword(password))
             {
-                throw new ValidationEx();
+                throw new ValidationException("Wrong password");
             }
             return new UserDTO(user.getUsername(), user.getRoles().stream()
                 .map(r -> r.getName()).collect(Collectors.toSet()));
         }
-        return null;
+    }
+
+    public void updateUser(User user)
+    {
+
+    }
+
+    public void deleteUser (User user)
+    {
+
     }
 }
