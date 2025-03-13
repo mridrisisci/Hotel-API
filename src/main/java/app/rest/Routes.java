@@ -42,6 +42,13 @@ public class Routes
             path("/auth", () ->
             {
                 post("/register", ISecurityController.register());
+                post("/login", ISecurityController.login());
+            });
+            path("/secured", () ->
+            {
+               before(ctx-> iSecurityController.authenticate());
+               before(ctx-> iSecurityController.authorize());
+
             });
         };
     }

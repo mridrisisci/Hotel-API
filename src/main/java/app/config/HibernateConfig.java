@@ -1,8 +1,8 @@
 package app.config;
 
 import app.entities.*;
-import app.security.entities.Role;
-import app.security.entities.User;
+import app.entities.Role;
+import app.entities.User;
 import app.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;

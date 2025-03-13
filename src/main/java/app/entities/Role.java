@@ -1,18 +1,18 @@
-package app.security.entities;
+package app.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 public class Role
 {
@@ -29,5 +29,4 @@ public class Role
         this.name = name;
     }
 
-    public Role() {}
 }

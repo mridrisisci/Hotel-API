@@ -1,17 +1,38 @@
 package app.security.controllers;
 
-//mport app.dtos.UserDTO;
-import app.dtos.UserDTO;
-import app.entities.User;
-import app.security.daos.UserDAO;
+import app.config.HibernateConfig;
+import app.daos.UserDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dk.bugelhartmann.ITokenSecurity;
+import dk.bugelhartmann.TokenSecurity;
 import io.javalin.http.Handler;
-
-import java.util.Set;
+import jakarta.persistence.EntityManagerFactory;
 
 public class SecurityController implements ISecurityController
 {
 
-    private UserDAO userDAO = new UserDAO();
+    ObjectMapper objectMapper = new ObjectMapper();
+    ITokenSecurity iTokenSecurity = new TokenSecurity();
+    private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+    private UserDAO userDAO = UserDAO.getInstance(emf);
+
+    @Override
+    public Handler authorize()
+    {
+        return (ctx) ->
+        {
+
+        };
+    }
+
+    @Override
+    public Handler authenticate()
+    {
+        return (ctx) ->
+        {
+
+        };
+    }
 
     @Override
     public Handler login()
@@ -25,32 +46,9 @@ public class SecurityController implements ISecurityController
         return (ctx) ->
         {
             dk.bugelhartmann.UserDTO newUser = ctx.bodyAsClass(dk.bugelhartmann.UserDTO.class);
-            userDAO.create(newUser);
+            userDAO.create(new User(newUser.getUsername(), newUser.getPassword()));
             ctx.json(newUser);
         };
     }
 
-    @Override
-    public Handler authenticate()
-    {
-        return null;
-    }
-
-    @Override
-    public boolean authorize(UserDTO userDTO, Set<String> allowedRoles)
-    {
-        return false;
-    }
-
-    @Override
-    public String createToken(UserDTO user) throws Exception
-    {
-        return "";
-    }
-
-    @Override
-    public UserDTO verifyToken(String token) throws Exception
-    {
-        return null;
-    }
 }
