@@ -68,4 +68,10 @@ DELETE localhost:7000/api/hotel/1
 
 ###
 
-//
+POST localhost:7000/auth/register
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "1234"
+}

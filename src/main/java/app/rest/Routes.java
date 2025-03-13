@@ -2,8 +2,14 @@ package app.rest;
 
 import app.config.HibernateConfig;
 import app.controllers.HotelController;
+import app.dtos.UserDTO;
+import app.security.controllers.ISecurityController;
+import app.security.controllers.SecurityController;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.http.Handler;
 import jakarta.persistence.EntityManagerFactory;
+
+import java.util.Set;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -11,6 +17,7 @@ public class Routes
 {
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
     private static HotelController hotelController = new HotelController(emf);
+    private static ISecurityController iSecurityController = new SecurityController();
 
     public static EndpointGroup getRoutes()
     {
@@ -31,6 +38,10 @@ public class Routes
             path("hotel/{id}/rooms", () ->
             {
                 get(hotelController::getRooms);
+            });
+            path("/auth", () ->
+            {
+                post("/register", ISecurityController.register());
             });
         };
     }

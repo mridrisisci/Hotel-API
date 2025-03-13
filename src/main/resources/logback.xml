@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <root level="info">
+    <root level="warn"> <!-- info-->
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>

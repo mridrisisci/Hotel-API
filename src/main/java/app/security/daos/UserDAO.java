@@ -18,6 +18,16 @@ public class UserDAO
     {
         try (EntityManager em = emf.createEntityManager())
         {
+            if (user.getRoles().size() == 0)
+            {
+                Role userRole = em.find(Role.class, "user");
+                if (userRole == null)
+                {
+                    userRole = new Role("user");
+                    em.persist(userRole);
+                }
+                user.addRole(userRole);
+            }
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
