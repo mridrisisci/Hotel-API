@@ -3,8 +3,10 @@ package app.rest;
 import app.config.HibernateConfig;
 import app.controllers.HotelController;
 import app.dtos.UserDTO;
+import app.enums.Role;
 import app.security.controllers.ISecurityController;
 import app.security.controllers.SecurityController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Handler;
 import jakarta.persistence.EntityManagerFactory;
@@ -18,6 +20,7 @@ public class Routes
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
     private static HotelController hotelController = new HotelController(emf);
     private static ISecurityController iSecurityController = new SecurityController();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     public static EndpointGroup getRoutes()
     {
@@ -46,8 +49,9 @@ public class Routes
             });
             path("/secured", () ->
             {
-               before(ctx-> iSecurityController.authenticate());
-               before(ctx-> iSecurityController.authorize());
+                get("demo", (ctx) -> ctx.json(objectMapper.createObjectNode().put("msg","success")), Role.ACCOUNT);
+                before(ctx-> iSecurityController.authenticate());
+                before(ctx-> iSecurityController.authorize());
 
             });
         };
