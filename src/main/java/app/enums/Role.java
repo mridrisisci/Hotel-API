@@ -6,5 +6,6 @@ public enum Role implements RouteRole
 {
     ANYONE,
     ACCOUNT,
-    ADMIN
+    ADMIN,
+    USER
 }

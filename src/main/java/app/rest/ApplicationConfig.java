@@ -1,5 +1,7 @@
 package app.rest;
 
+import app.security.controllers.ISecurityController;
+import app.security.controllers.SecurityController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
@@ -14,6 +16,7 @@ public class ApplicationConfig
     private static Javalin app;
     private static JavalinConfig javalinConfig;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private static ISecurityController securityController = new SecurityController();
 
     private ApplicationConfig() {}
 
@@ -69,5 +72,12 @@ public class ApplicationConfig
     {
         app.stop();
         app = null;
+    }
+
+    public ApplicationConfig checkSecurityRoles()
+    {
+        app.beforeMatched(securityController.authenticate());
+        app.beforeMatched(securityController.authorize());
+        return instance;
     }
 }

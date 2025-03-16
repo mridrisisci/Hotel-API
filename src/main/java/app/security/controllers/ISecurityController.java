@@ -1,9 +1,6 @@
 package app.security.controllers;
 
-import app.dtos.UserDTO;
 import io.javalin.http.Handler;
-
-import java.util.Set;
 
 public interface ISecurityController
 {

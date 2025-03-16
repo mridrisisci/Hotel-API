@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -31,10 +32,18 @@ public class User implements ISecurityUser
     )
     Set<Role> roles = new HashSet<>();
 
+
     public User(String username, String password)
     {
         this.username = username;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+    @Override
+    public Set<String> getRolesAsStrings()
+    {
+
+        return roles.stream()
+            .map(Role::getRoleName).collect(Collectors.toSet());
     }
 
     @Override
@@ -43,20 +52,25 @@ public class User implements ISecurityUser
         return BCrypt.checkpw(pw, this.password);
     }
 
+
+
     @Override
-    public void addRole(Role role)
+    public User addRole(Role role)
     {
         roles.add(role);
-        role.users.add(this);
+        role.users.add(this); // "admin".users.add(Morten)
+        return this;
     }
 
     @Override
     public void removeRole(String role)
     {
-        roles.removeIf(r -> r.getName().equals(role));
+        roles.removeIf(r -> r.getRoleName().equals(role));
         roles.stream()
-            .filter(r -> r.getName().equals(role))
+            .filter(r -> r.getRoleName().equals(role))
             .findFirst()
             .ifPresent(r -> r.getUsers().remove(this));
     }
+
+
 }

@@ -26,6 +26,7 @@ public class Main
         ApplicationConfig
             .getInstance()
             .initiateServer()
+            .checkSecurityRoles()
             .setRoute(Routes.getRoutes())
             .handleExceptions()
             .startServer(7000);

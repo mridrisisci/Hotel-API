@@ -44,17 +44,17 @@ public class UserDAO
             Set<Role> newRoleSet = new HashSet<>();
             if (user.getRoles().size() == 0)
             {
-                Role userRole = em.find(Role.class, "user");
+                Role userRole = em.find(Role.class, "account");
                 if (userRole == null)
                 {
-                    userRole = new Role("user");
+                    userRole = new Role("account");
                     em.persist(userRole);
                 }
                 user.addRole(userRole);
             }
             user.getRoles().forEach(role ->
             {
-                Role foundRole = em.find(Role.class, role.getName());
+                Role foundRole = em.find(Role.class, role.getRoleName());
                 if (foundRole == null)
                 {
                     throw new EntityNotFoundException("no role found with this id");
@@ -86,7 +86,7 @@ public class UserDAO
         }
     }
 
-    public UserDTO getVerifeidUser(String username, String password) throws ValidationException
+    public UserDTO getVerifiedUser(String username, String password) throws ValidationException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -101,7 +101,7 @@ public class UserDAO
                 throw new ValidationException("Wrong password");
             }
             return new UserDTO(user.getUsername(), user.getRoles().stream()
-                .map(r -> r.getName()).collect(Collectors.toSet()));
+                .map(r -> r.getRoleName()).collect(Collectors.toSet()));
         }
     }
 
@@ -114,4 +114,6 @@ public class UserDAO
     {
 
     }
+
+
 }

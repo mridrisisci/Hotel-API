@@ -17,16 +17,16 @@ import java.util.Set;
 public class Role
 {
     @Id
-    private String name;
+    private String roleName;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
     Set<User> users = new HashSet<>();
 
-    public Role(String name)
+    public Role(String roleName)
     {
-        this.name = name;
+        this.roleName = roleName;
     }
 
 }
