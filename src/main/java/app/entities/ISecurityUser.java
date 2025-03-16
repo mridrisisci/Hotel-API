@@ -7,5 +7,5 @@ public interface ISecurityUser
     Set<String> getRolesAsStrings();
     boolean verifyPassword(String pw);
     User addRole(Role role);
-    void removeRole(String role);
+    User removeRole(String role);
 }

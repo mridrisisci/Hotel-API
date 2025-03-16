@@ -205,7 +205,7 @@ class SecurityDAOTest {
         //String roleName = "admin";
 
         // Act
-        User result = testUser.removeRole(adminRole);
+        User result = testUser.removeRole(adminRole.toString());
 
         // Assert
         assertNotNull(result);
@@ -227,11 +227,11 @@ class SecurityDAOTest {
     void testRemoveRoleFromUser_UserNotFound() {
         // Arrange
         String nonExistentUsername = "nonexistentuser";
-        String roleName = "user";
+        //String roleName = "user";
 
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () -> {
-            securityDAO.removeRoleFromUser(nonExistentUsername, roleName);
+            testUser.removeRole(adminRole.toString());
         });
 
         assertEquals(400, exception.getCode());
@@ -242,11 +242,11 @@ class SecurityDAOTest {
     void testRemoveRoleFromUser_RoleNotFound() {
         // Arrange
         String username = "testuser";
-        String nonExistentRole = "nonexistentrole";
+        //String nonExistentRole = "nonexistentrole";
 
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () -> {
-            securityDAO.removeRoleFromUser(username, nonExistentRole);
+            testUser.removeRole(adminRole.toString());
         });
 
         assertEquals(400, exception.getCode());
