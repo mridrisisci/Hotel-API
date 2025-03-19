@@ -1,4 +1,4 @@
-package app.rest;
+package app.config;
 
 import app.security.controllers.ISecurityController;
 import app.security.controllers.SecurityController;

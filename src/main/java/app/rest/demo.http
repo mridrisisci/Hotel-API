@@ -47,7 +47,8 @@ Cootent-Type: application/json
     "id": 1,
     "name": "Updated Hotel Name",
     "address": "Updated Address",
-    "rooms": [
+    "rooms":
+    [
         {
             "id": 101,
             "number": 1,

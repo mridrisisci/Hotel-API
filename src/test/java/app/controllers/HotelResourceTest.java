@@ -1,10 +1,9 @@
 package app.controllers;
 
 import app.config.HibernateConfig;
-import app.daos.GenericDAO;
 import app.entities.Hotel;
 import app.entities.Room;
-import app.rest.ApplicationConfig;
+import app.config.ApplicationConfig;
 import app.rest.Routes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +11,6 @@ import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

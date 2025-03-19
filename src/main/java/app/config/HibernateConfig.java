@@ -12,8 +12,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.util.Properties;
 
-public class HibernateConfig
-{
+public class HibernateConfig {
     private static EntityManagerFactory emf;
     private static EntityManagerFactory emfTest;
     private static Boolean isTest = false;
@@ -27,37 +26,51 @@ public class HibernateConfig
     }
 
     public static EntityManagerFactory getEntityManagerFactory() {
-        if (emf == null)
-            emf = createEMF(getTest());
-        return emf;
+        if (System.getenv("PRODUCTION") != null) {
+            return setupHibernateConfigurationForProduction();
+        }
+        return isTest ? getEntityManagerFactoryForTest() : getEntityManagerFactoryForDevelopment();
     }
 
     public static EntityManagerFactory getEntityManagerFactoryForTest() {
-        if (emfTest == null){
+        if (emfTest == null) {
             setTest(true);
-            emfTest = createEMF(getTest());  // No DB needed for test
+            emfTest = createEMF(true);  // No DB needed for test
         }
         return emfTest;
     }
 
-    // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
-    private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(Hotel.class);
-        configuration.addAnnotatedClass(Room.class);
-        configuration.addAnnotatedClass(User.class);
-        configuration.addAnnotatedClass(Role.class);
+    public static EntityManagerFactory getEntityManagerFactoryForDevelopment() {
+        if (emf == null) {
+            emf = createEMF(false);
+        }
+        return emf;
+    }
+
+    private static EntityManagerFactory setupHibernateConfigurationForProduction() {
+        Properties props = new Properties();
+        // Get values from environment variables
+        props.put("hibernate.connection.url", System.getenv("JDBC_DATABASE_URL"));
+        props.put("hibernate.connection.username", System.getenv("JDBC_DATABASE_USERNAME"));
+        props.put("hibernate.connection.password", System.getenv("JDBC_DATABASE_PASSWORD"));
+        props.put("hibernate.hbm2ddl.auto", "update"); // Use update in production for schema updates
+        return new Configuration().addProperties(props).addAnnotatedClass(Hotel.class)
+            .addAnnotatedClass(Room.class)
+            .addAnnotatedClass(User.class)
+            .addAnnotatedClass(Role.class)
+            .buildSessionFactory();
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
         try {
             Configuration configuration = new Configuration();
             Properties props = new Properties();
-            // Set the properties
+            // Set the base properties
             setBaseProperties(props);
             if (forTest) {
                 props = setTestProperties(props);
-            } else if (System.getenv("DEPLOYED") != null) {
-                setDeployedProperties(props);
+            } else if (System.getenv("PRODUCTION") != null) {
+                props = setDeployedProperties(props);
             } else {
                 props = setDevProperties(props);
             }
@@ -70,11 +83,17 @@ public class HibernateConfig
             SessionFactory sf = configuration.buildSessionFactory(serviceRegistry);
             EntityManagerFactory emf = sf.unwrap(EntityManagerFactory.class);
             return emf;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+
+    private static void getAnnotationConfiguration(Configuration configuration) {
+        configuration.addAnnotatedClass(Hotel.class);
+        configuration.addAnnotatedClass(Room.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Role.class);
     }
 
     private static Properties setBaseProperties(Properties props) {
@@ -104,8 +123,8 @@ public class HibernateConfig
         props.put("hibernate.connection.password", DB_PASSWORD);
         return props;
     }
-
     private static Properties setTestProperties(Properties props) {
+
         props.put("hibernate.connection.driver_class", "org.testcontainers.jdbc.ContainerDatabaseDriver");
         props.put("hibernate.connection.url", "jdbc:tc:postgresql:16.2:///test_db");
         props.put("hibernate.archive.autodetection", "hbm,class");
