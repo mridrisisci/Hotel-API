@@ -83,11 +83,11 @@ public class HotelResourceTest
     @AfterAll
     static void tearDown()
     {
-        if (emf != null && emf.isOpen())
+        /*if (emf != null && emf.isOpen())
         {
             emf.close();
             System.out.println("EMF is closed....");
-        }
+        }*/
         ApplicationConfig.getInstance().stopServer();
     }
 
