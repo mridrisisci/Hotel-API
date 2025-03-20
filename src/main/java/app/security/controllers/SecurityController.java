@@ -36,6 +36,7 @@ public class SecurityController implements ISecurityController {
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
     private UserDAO userDAO = UserDAO.getInstance(emf);
+
     @Override
     public Handler register(){
         return (ctx)->{
