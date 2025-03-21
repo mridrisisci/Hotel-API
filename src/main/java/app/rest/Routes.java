@@ -6,8 +6,8 @@ import app.enums.Role;
 import app.security.controllers.ISecurityController;
 import app.security.controllers.SecurityController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
+import io.javalin.apibuilder.EndpointGroup;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -40,6 +40,8 @@ public class Routes
             });
             path("/auth", () ->
             {
+                get("/healthcheck", SecurityController::healthCheck, Role.ANYONE);
+                get("/test", ctx -> ctx.json(objectMapper.createObjectNode().put("msg", "hello from Open Deployment")), Role.ANYONE);
                 post("/register", securityController.register());
                 post("/login", securityController.login());
             });
