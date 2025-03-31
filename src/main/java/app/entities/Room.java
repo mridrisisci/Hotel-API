@@ -26,12 +26,16 @@ public class Room
     @JsonBackReference
     private Hotel hotel;
 
+    public Room(Integer number)
+    {
+        this.number = number;
+    }
     public Room(RoomDTO roomDTO, Hotel hotel)
     {
         this.number = roomDTO.getNumber();
         this.price = roomDTO.getPrice();
         this.hotel = hotel;
-
     }
+
 
 }

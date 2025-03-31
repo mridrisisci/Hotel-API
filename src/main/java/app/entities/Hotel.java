@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @Table(name = "hotels")
-public class Hotel
+public class  Hotel
 {
 
     @Id
@@ -40,9 +40,10 @@ public class Hotel
             .collect(Collectors.toSet());
     }
 
-    public Hotel(String name)
+    public Hotel(String name, String address)
     {
         this.name = name;
+        this.address = address;
     }
 
     public Hotel(Hotel hotel)

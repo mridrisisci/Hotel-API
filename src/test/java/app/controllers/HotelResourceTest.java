@@ -1,105 +1,110 @@
 package app.controllers;
 
+import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
+import app.dtos.HotelDTO;
 import app.entities.Hotel;
 import app.entities.Room;
-import app.config.ApplicationConfig;
 import app.rest.Routes;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import app.security.controllers.SecurityController;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class HotelResourceTest
 {
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    ObjectMapper objectMapper = new ObjectMapper();
-    Hotel hotel;
-    Hotel hotel2;
-
+    final ObjectMapper objectMapper = new ObjectMapper();
+    private final Logger logger = LoggerFactory.getLogger(HotelResourceTest.class.getName());
+    private static SecurityController securityController;
+    Hotel hotelTest1, hotelTest2;
 
     @BeforeAll
-    static void setupAll()
+    static void beforeAll()
     {
+        HotelController hotelController = new HotelController(emf);
+        securityController = new SecurityController();
+        Routes routes = new Routes(hotelController, securityController);
         ApplicationConfig
             .getInstance()
             .initiateServer()
-            .setRoute(Routes.getRoutes())
+            .setRoute(routes.getRoutes())
             .handleExceptions()
-            .startServer(7777);
-        RestAssured.baseURI = "http://localhost:7777/api";
+            .checkSecurityRoles()
+            .startServer(7000);
+        RestAssured.baseURI = "http://localhost:7000/api";
     }
 
     @BeforeEach
-    void setUp()
+    void beforeEach()
     {
         try (EntityManager em = emf.createEntityManager())
         {
-            em.getTransaction().begin();
+            hotelTest1 = new Hotel("First test Hotel", "avenue silver streete");
+            hotelTest2 = new Hotel("Second test hotel", "Bronze age avenue");
 
-            // wipe db
+            em.getTransaction().begin();
             em.createQuery("DELETE FROM Room").executeUpdate();
             em.createQuery("DELETE FROM Hotel").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE room_id_seq RESTART WITH 1");
-            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1");
 
-            // new entities
-            hotel = new Hotel();
-            hotel.setName("Grand Deluxe Hotel");
-            em.persist(hotel);
-
-            hotel2 = new Hotel();
-            hotel2.setName("Miami Beach Hotel");
-            em.persist(hotel2);
-
-            Room room = new Room();
-            room.setHotel(hotel);
-            em.persist(room);
-
-            Room room2 = new Room();
-            room2.setHotel(hotel2);
-            em.persist(room2);
-            //Set<Room> rooms = new HashSet<>(Set.of(room, room2));
-
-            // setters
-           // hotel.setRooms(rooms);
-
-            // save to db
+            em.persist(hotelTest1);
+            em.persist(hotelTest2);
+            em.flush(); // force persistnce immediately
             em.getTransaction().commit();
-
-            em.clear();
-
+            em.clear(); // detach entities from persistence context
         } catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("error setting up test", e);
+            fail();
         }
     }
 
-    @AfterAll
-    static void tearDown()
+    @Test
+    void getAll()
     {
-        /*if (emf != null && emf.isOpen())
-        {
-            emf.close();
-            System.out.println("EMF is closed....");
-        }*/
-        ApplicationConfig.getInstance().stopServer();
+        given()
+            .when()
+            .get("/hotel")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(2));
     }
 
     @Test
-    @DisplayName("Test : create hotel")
-    void testCreate()
+    void getById()
     {
-        Hotel hotel3 = new Hotel("Black Hotel");
+        given().when()
+            .pathParam("id", hotelTest2.getId())
+            .contentType("application/json")
+            .accept("application/json")
+            .get("/hotel/{id}")
+            .then()
+            .statusCode(200)
+            .body("id", equalTo( hotelTest2.getId().intValue()));
+    }
+
+    @Test
+    void create()
+    {
+        Hotel entity = new Hotel("Hilton Hotel", "Golden Avenue");
+        Room room = new Room(200);
+        entity.addRoom(room);
         try
         {
-            String json = objectMapper.writeValueAsString(hotel3);
-
+            String json = objectMapper.writeValueAsString(new HotelDTO(entity));
             given().when()
                 .contentType("application/json")
                 .accept("application/json")
@@ -107,69 +112,45 @@ public class HotelResourceTest
                 .post("/hotel")
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(hotel3.getName()));
-        } catch (JsonProcessingException e)
+                .body("name", equalTo(entity.getName()));
+        } catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("Error creating test hotel");
+            fail();
         }
-
     }
 
     @Test
-    @DisplayName("Test : update hotel")
-    void testUpdate()
+    void update()
     {
-        hotel.setName("CPhbusiness Hotel");
+        Hotel entity = new Hotel("Updated hotel", "new location");
         try
         {
+            String json = objectMapper.writeValueAsString(new HotelDTO(entity));
             given().when()
-                .contentType("application/json")
+                .pathParam("id", hotelTest1.getId())
                 .accept("application/json")
-                .body(hotel)
-                .put("/hotel/{id}", hotel.getId())
+                .contentType("application/json")
+                .body(json)
+                .put("/hotel/{id}")
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(hotel.getName()));
-        } catch (Exception e)
+                .body("name", equalTo(entity.getName()));
+        } catch (JsonProcessingException e)
         {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Test
-    @DisplayName("Test : read hotel")
-    void read()
-    {
-    }
-
-    @Test
-    @DisplayName("Test : find all hotels")
-    void findAll()
-    {
-    }
-
-    @Test
-    @DisplayName("Test : delete hotel")
-    void testDelete()
-    {
-        try
-        {
-            given().when()
-                .body(hotel2)
-                .delete("/hotel/{id}", hotel2.getId())
-                .then()
-                .statusCode(200);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+            logger.error("Error updating entity", e);
+            fail();
         }
     }
 
     @Test
-    @DisplayName("Test : get hotel by id")
-    void testGetById()
+    void delete()
     {
+        given().when()
+            .pathParam("id", hotelTest1.getId())
+            .delete("/hotel/{id}")
+            .then()
+            .statusCode(200);
     }
+
 }

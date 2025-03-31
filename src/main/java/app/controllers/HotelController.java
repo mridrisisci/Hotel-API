@@ -109,7 +109,6 @@ public class HotelController
                 ctx.status(404).json("Could not find hotel");
                 return;
             }
-
             HotelDTO hotelDTO = new HotelDTO(foundHotel);
             ctx.json(hotelDTO);
         } catch (Exception e)

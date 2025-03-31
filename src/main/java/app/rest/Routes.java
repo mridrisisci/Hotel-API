@@ -18,6 +18,12 @@ public class Routes
     private static ISecurityController securityController = new SecurityController();
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    public Routes(HotelController hotelController, SecurityController securityController)
+    {
+        this.hotelController = hotelController;
+        this.securityController = securityController;
+    }
+
     public static EndpointGroup getRoutes()
     {
         return () ->
